@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UsersService } from "./users.service";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -22,10 +30,19 @@ export class UsersController {
   @ApiOperation({ summary: "Get all users" })
   @ApiResponse({ status: 200, type: [User] })
   // @UseGuards(JwtAuthGuard)
-  @Roles("ADMIN")
-  @UseGuards(RolesGuard)
+  // @Roles("ADMIN")
+  // @UseGuards(RolesGuard)
   @Get()
   getAll() {
     return this.usersService.getAllUsers();
+  }
+
+  @ApiOperation({ summary: "Remove user" })
+  @ApiResponse({ status: 200, type: [User] })
+  // @Roles("ADMIN")
+  // @UseGuards(RolesGuard)
+  @Delete(":id")
+  removeSession(@Param("id") id: number) {
+    return this.usersService.removeUser(id);
   }
 }

@@ -1,4 +1,4 @@
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import {
   BelongsToMany,
   Column,
@@ -12,6 +12,8 @@ import { UserRoles } from "src/roles/user-roles.models";
 interface UserCreationAttr {
   email: string;
   password: string;
+  name: string;
+  lastname: string;
 }
 
 @Table({ tableName: "users" })
@@ -24,6 +26,7 @@ export class User extends Model<User, UserCreationAttr> {
     primaryKey: true,
   })
   id: number;
+
   @ApiProperty({ example: "john@doe.com", description: "unique email" })
   @Column({
     type: DataType.STRING,
@@ -31,12 +34,27 @@ export class User extends Model<User, UserCreationAttr> {
     allowNull: false,
   })
   email: string;
+
   @ApiProperty({ example: "pass123word", description: "user password" })
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   password: string;
+
+  @ApiProperty({ example: "John", description: "user name" })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  name: string;
+
+  @ApiProperty({ example: "Doe", description: "user lastname" })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  lastname: string;
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];
